@@ -24,7 +24,7 @@ You may also see any lint errors in the console.
 
 ## PORTS
 
-express and mongoogeDB are running on port 808 and React frontend is on port 3000
+express and mongoogeDB are running on port 8080 and React frontend is on port 3000
 
 ## SIGN UP
 
