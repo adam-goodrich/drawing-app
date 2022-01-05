@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useCanvas } from "./CanvasContext";
-import MyNavbar from "./Navbar";
 
 export function Canvas(props) {
   const { canvasRef, prepareCanvas, startDrawing, finishDrawing, draw } =
