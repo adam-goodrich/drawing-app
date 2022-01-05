@@ -65,8 +65,8 @@ const Login = (props) => {
             />
           </div>
         </div>
-        <div className="mb-3 row">
-          <button type="submit" className="btn btn-primary btn-lg m-1">
+        <div className="mb-3 row container ">
+          <button type="submit" className="btn btn-primary btn-lg m-2 mt-3">
             Login
           </button>
         </div>

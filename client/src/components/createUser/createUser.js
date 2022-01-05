@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CreateUser = () => {
+const CreateUser = (props) => {
   const [user, setUser] = useState({
     email: "",
     username: "",
@@ -10,7 +10,7 @@ const CreateUser = () => {
     lastname: "",
   });
 
-  const createNewUser = (e) => {
+  const createNewUser = () => {
     if (user.email === "") {
       return;
     } else if (user.username === "") {
@@ -31,7 +31,6 @@ const CreateUser = () => {
     }
     axios.post("http://localhost:8080/users", user).then((response) => {
       console.log(response);
-      window.location.reload(false);
     });
   };
 

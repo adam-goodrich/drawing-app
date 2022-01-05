@@ -21,6 +21,7 @@ function App() {
   });
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
+  const [showMainModal, setShowMainModal] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:8080/users").then((allUsers) => {
@@ -32,11 +33,13 @@ function App() {
     }
   }, []);
 
-  const handleCloseLogin = () => setShowLoginModal(false);
-  const handleShowLogin = () => setShowLoginModal(true);
-
-  const handleCloseCreateUser = () => setShowCreateUserModal(false);
+  const handleCloseCreateUser = () => {
+    setShowCreateUserModal(false);
+    setShowMainModal(false);
+  };
   const handleShowCreateUser = () => setShowCreateUserModal(true);
+  const handleShowMainModal = () => setShowMainModal(true);
+  const handleCloseMainModal = () => setShowMainModal(false);
 
   if (userLoggedIn) {
     return (
@@ -61,20 +64,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="mt-5">Drawing app</h1>
       <div className="d-flex align-items-center justify-content-center btn-container">
-        <Button variant="primary" onClick={handleShowLogin} className="m-5">
+        <h1 className="mt-5 me-5">Drawing app</h1>
+        <Button variant="primary mt-5 " onClick={handleShowMainModal}>
           Login
         </Button>
-
-        <Button
-          variant="primary"
-          onClick={handleShowCreateUser}
-          className="m-5">
-          Create User
-        </Button>
       </div>
-
       <Modal
         show={showCreateUserModal}
         onHide={handleCloseCreateUser}
@@ -107,31 +102,40 @@ function App() {
       </Modal>
 
       <Modal
-        show={showLoginModal}
-        onHide={handleCloseLogin}
+        show={showMainModal}
+        onHide={handleCloseMainModal}
         backdrop="static"
         keyboard={false}
-        size="lg"
-        centered>
+        centered
+        size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Login
-            userLoggedIn={userLoggedIn}
-            setUserLoggedIn={setUserLoggedIn}
-            userList={userList}
-            setUserList={setUserList}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-            showLoginModal={showLoginModal}
-            setShowLoginModal={setShowLoginModal}
-            showCreateUserModal={showCreateUserModal}
-            setShowCreateUserModal={setShowCreateUserModal}
-          />
+        <Modal.Body className="m-5">
+          <div className="d-flex align-items-center justify-content-center">
+            <Login
+              userLoggedIn={userLoggedIn}
+              setUserLoggedIn={setUserLoggedIn}
+              userList={userList}
+              setUserList={setUserList}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+              showLoginModal={showLoginModal}
+              setShowLoginModal={setShowLoginModal}
+              showCreateUserModal={showCreateUserModal}
+              setShowCreateUserModal={setShowCreateUserModal}
+            />
+            <br />
+          </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseLogin}>
+          <Button
+            variant="primary"
+            onClick={handleShowCreateUser}
+            className="me-2">
+            Create User
+          </Button>
+          <Button variant="secondary" onClick={handleCloseMainModal}>
             Close
           </Button>
         </Modal.Footer>
