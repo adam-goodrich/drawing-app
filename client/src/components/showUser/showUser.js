@@ -38,6 +38,7 @@ const ShowUser = (props) => {
     if (drawing.usersWithAccess.includes(props.currentUser.username)) {
       return drawing;
     }
+    return null;
   });
   drawingsToDisplay = drawingsToDisplay.filter((n) => n);
 
@@ -129,6 +130,7 @@ const ShowUser = (props) => {
       usersWithAccess: [...currentAuthorizedUsers],
     };
     setActiveDrawing(drawing);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAuthorizedUsers]);
 
   const addUserBtn = document.getElementById("addUserBtn");

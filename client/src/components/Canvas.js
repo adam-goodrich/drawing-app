@@ -7,6 +7,7 @@ export function Canvas(props) {
 
   useEffect(() => {
     prepareCanvas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export function Canvas(props) {
     if (props.currentUser.username === props.activeDrawing.usersWithAccess[3]) {
       context.strokeStyle = "orange";
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
