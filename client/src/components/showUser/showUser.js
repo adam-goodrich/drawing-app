@@ -13,13 +13,6 @@ const ShowUser = (props) => {
   const [selectFormUser, setSelectFormUser] = useState("Select a user");
   const [currentAuthorizedUsers, setCurrentAuthorizedUsers] = useState([]);
   const [activeDrawing, setActiveDrawing] = useState(null);
-  const [idClicked, setIdClicked] = useState(null);
-
-  const deleteUser = (id) => {
-    axios.delete(`http://localhost:8080/users/${id}`).then((response) => {
-      window.location.reload(false);
-    });
-  };
 
   const deleteDrawing = (id) => {
     axios.delete(`http://localhost:8080/drawings/${id}`).then((response) => {
@@ -38,6 +31,7 @@ const ShowUser = (props) => {
       ...props.currentUser,
       drawings: drawings,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawings]);
 
   let drawingsToDisplay = props.currentUser.drawings.map((drawing) => {
@@ -58,7 +52,6 @@ const ShowUser = (props) => {
 
   const clickOpenHandler = (id) => {
     setClickedOpen(true);
-    setIdClicked(id);
     drawingsToDisplay.forEach((drawing) => {
       if (drawing._id === id) {
         setActiveDrawing(drawing);
