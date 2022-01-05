@@ -56,6 +56,7 @@ function App() {
             setShowLoginModal={setShowLoginModal}
             showCreateUserModal={showCreateUserModal}
             setShowCreateUserModal={setShowCreateUserModal}
+            setShowMainModal={setShowMainModal}
           />
         </div>
       </div>

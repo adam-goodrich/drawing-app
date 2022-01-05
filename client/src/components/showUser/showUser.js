@@ -46,7 +46,7 @@ const ShowUser = (props) => {
     localStorage.setItem("userLoggedIn", "false");
     props.setUserLoggedIn(false);
     localStorage.setItem("currentUser", JSON.stringify({}));
-    props.setShowLoginModal(false);
+    props.setShowMainModal(false);
     props.setShowCreateUserModal(false);
     setClickedNew(false);
   };
