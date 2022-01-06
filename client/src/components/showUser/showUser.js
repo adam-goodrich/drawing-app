@@ -88,14 +88,17 @@ const ShowUser = (props) => {
   const updateDrawing = (id) => {
     const canvas = document.getElementById("canvas");
     const imageData = canvas.toDataURL();
+    console.log(imageData);
     const drawing = {
       ...activeDrawing,
       image: imageData,
       usersWithAccess: [...currentAuthorizedUsers],
     };
+    console.log(drawing);
     axios
       .put(`http://localhost:8080/drawings/${id}`, drawing)
       .then((response) => {
+        console.log(response);
         alert("Drawing updated!");
       });
   };
