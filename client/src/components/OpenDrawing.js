@@ -44,7 +44,7 @@ const OpenDrawing = (props) => {
           <h1>{props.activeDrawing.title}</h1>
         </div>
         <div className="mt-4">
-          <label className="col-sm-2 col-form-label">Collaborators:</label>
+          <label className="col-form-label me-2">Collaborators:</label>
           {props.activeDrawing.usersWithAccess.map((user, index) => {
             let userColor;
             if (index === 0) {
@@ -75,15 +75,13 @@ const OpenDrawing = (props) => {
           })}
         </div>
         <div className="row mt-3">
-          <label className="col-sm-2 col-form-label">Add Collaborator:</label>
-
+          <label className="col-form-label">Add Collaborator:</label>
           <select
             className="col-sm-10 form-select"
             value={props.selectFormUser}
             onChange={props.handleSelectChange}
             id="delectForm">
             <option value="">Select a user to add</option>
-
             {props.userList.map((user, index) => {
               if (user.username === props.currentUser.username) {
                 return null;

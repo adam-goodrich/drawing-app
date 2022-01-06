@@ -43,9 +43,7 @@ const NewDrawing = (props) => {
           />
         </div>
         <div className="mt-4 pull-left">
-          <label className="col-sm-2 col-form-label ">
-            Collaborators: <br></br>
-          </label>
+          <label className="col-form-label me-2">Collaborators:</label>
           {renderThisDrawing.usersWithAccess.map((user, index) => {
             return (
               <span className="badge bg-secondary m-2" key={user._id}>
@@ -60,8 +58,7 @@ const NewDrawing = (props) => {
           })}
         </div>
         <div className="row mt-3">
-          <label className="col-sm-2 col-form-label">Add Collaborator:</label>
-
+          <label className="col-form-label">Add Collaborator:</label>
           <select
             className="col-sm-10 form-select"
             value={props.selectFormUser}
