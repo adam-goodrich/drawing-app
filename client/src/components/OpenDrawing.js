@@ -41,7 +41,7 @@ const OpenDrawing = (props) => {
 
       <div className="container mt-5 mb-5">
         <div className="row">
-          <h1>{props.activeDrawing.title}</h1>
+          <h1 className="text-center">{props.activeDrawing.title}</h1>
         </div>
         <div className="mt-4">
           <label className="col-form-label me-2">Collaborators:</label>
