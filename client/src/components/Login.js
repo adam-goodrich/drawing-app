@@ -6,10 +6,7 @@ const Login = (props) => {
 
     props.userList.forEach((person) => {
       if (person.username === props.currentUser.username) {
-        console.log("found user");
-
         if (person.password === props.currentUser.password) {
-          console.log("logged in");
           props.setUserLoggedIn(true);
           props.setCurrentUser(person);
           localStorage.setItem("userLoggedIn", "true");
