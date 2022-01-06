@@ -5,7 +5,6 @@ import { CanvasProvider } from "./CanvasContext";
 import { ClearCanvasButton } from "./ClearCanvasButton";
 
 const OpenDrawing = (props) => {
-  
   useEffect(() => {
     const addUserBtn = document.getElementById("addUserBtn");
     try {
@@ -44,38 +43,36 @@ const OpenDrawing = (props) => {
         <div className="row">
           <h1>{props.activeDrawing.title}</h1>
         </div>
-        <div className=" mt-4">
-          <label className="col-sm-2 col-form-label">
-            Collaborators:
-            {props.activeDrawing.usersWithAccess.map((user, index) => {
-              let userColor;
-              if (index === 0) {
-                userColor = <span>Black</span>;
-              }
-              if (index === 1) {
-                userColor = <span>Red</span>;
-              }
-              if (index === 2) {
-                userColor = <span>Green</span>;
-              }
-              if (index === 3) {
-                userColor = <span>Blue</span>;
-              }
-              if (index === 4) {
-                userColor = <span>Orange</span>;
-              }
-              return (
-                <span key={index} className="badge bg-secondary m-2">
-                  {user}:{userColor}
-                  <button
-                    onClick={() => props.removeUser(user)}
-                    className="btn btn-danger btn-sm ms-2">
-                    X
-                  </button>
-                </span>
-              );
-            })}
-          </label>
+        <div className="mt-4">
+          <label className="col-sm-2 col-form-label">Collaborators:</label>
+          {props.activeDrawing.usersWithAccess.map((user, index) => {
+            let userColor;
+            if (index === 0) {
+              userColor = <span>Black</span>;
+            }
+            if (index === 1) {
+              userColor = <span>Red</span>;
+            }
+            if (index === 2) {
+              userColor = <span>Green</span>;
+            }
+            if (index === 3) {
+              userColor = <span>Blue</span>;
+            }
+            if (index === 4) {
+              userColor = <span>Orange</span>;
+            }
+            return (
+              <span key={index} className="badge bg-secondary m-2">
+                {user}:{userColor}
+                <button
+                  onClick={() => props.removeUser(user)}
+                  className="btn btn-danger btn-sm m-1 ms-2 p-0 px-1">
+                  x
+                </button>
+              </span>
+            );
+          })}
         </div>
         <div className="row mt-3">
           <label className="col-sm-2 col-form-label">Add Collaborator:</label>

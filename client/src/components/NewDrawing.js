@@ -42,22 +42,22 @@ const NewDrawing = (props) => {
             }}
           />
         </div>
-        <div className="row card mt-4">
-          <label className="col-sm-2 col-form-label">
+        <div className="mt-4 pull-left">
+          <label className="col-sm-2 col-form-label ">
             Collaborators: <br></br>
-            {renderThisDrawing.usersWithAccess.map((user, index) => {
-              return (
-                <span className="badge bg-secondary m-2 " key={user._id}>
-                  {user}
-                  <button
-                    onClick={() => props.removeUser(user)}
-                    className="btn btn-danger btn-sm ms-2">
-                    X
-                  </button>
-                </span>
-              );
-            })}
           </label>
+          {renderThisDrawing.usersWithAccess.map((user, index) => {
+            return (
+              <span className="badge bg-secondary m-2" key={user._id}>
+                {user}
+                <button
+                  onClick={() => props.removeUser(user)}
+                  className="btn btn-danger btn-sm m-1 ms-2 p-0 px-1">
+                  x
+                </button>
+              </span>
+            );
+          })}
         </div>
         <div className="row mt-3">
           <label className="col-sm-2 col-form-label">Add Collaborator:</label>
