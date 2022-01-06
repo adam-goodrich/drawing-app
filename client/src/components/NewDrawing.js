@@ -98,6 +98,22 @@ const NewDrawing = (props) => {
         </div>
       </div>
       <CanvasProvider>
+        <div className="d-flex justify-content-center my-3">
+          <button
+            onClick={props.saveCanvas}
+            className="btn btn-success me-3 mb-5 mt-3 px-4">
+            Save
+          </button>
+          <ClearCanvasButton />
+          <button
+            className="btn btn-warning ms-3 mb-5 mt-3 px-4"
+            onClick={() => {
+              props.setClickedNew(false);
+              props.setActiveDrawing({});
+            }}>
+            Main Menu
+          </button>
+        </div>
         <Canvas
           activeDrawing={props.activeDrawing}
           userLoggedIn={props.userLoggedIn}
@@ -111,20 +127,6 @@ const NewDrawing = (props) => {
           showCreateUserModal={props.showCreateUserModal}
           setShowCreateUserModal={props.setShowCreateUserModal}
         />
-        <button
-          onClick={props.saveCanvas}
-          className="btn btn-success me-3 mb-5 mt-3">
-          Save
-        </button>
-        <ClearCanvasButton />
-        <button
-          className="btn btn-warning ms-3 mb-5 mt-3"
-          onClick={() => {
-            props.setClickedNew(false);
-            props.setActiveDrawing({});
-          }}>
-          Main Menu
-        </button>
       </CanvasProvider>
     </div>
   );
