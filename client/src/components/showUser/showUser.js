@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Canvas } from "../Canvas";
-import { ClearCanvasButton } from "../ClearCanvasButton";
-import { CanvasProvider } from "../CanvasContext";
-import MyNavbar from "../Navbar";
+import OpenDrawing from "../OpenDrawing";
+import NewDrawing from "../NewDrawing";
 
 const ShowUser = (props) => {
   const [drawings, setDrawings] = useState([]);
@@ -13,12 +11,6 @@ const ShowUser = (props) => {
   const [selectFormUser, setSelectFormUser] = useState("Select a user");
   const [currentAuthorizedUsers, setCurrentAuthorizedUsers] = useState([]);
   const [activeDrawing, setActiveDrawing] = useState(null);
-
-  const deleteDrawing = (id) => {
-    axios.delete(`http://localhost:8080/drawings/${id}`).then((response) => {
-      window.location.reload(false);
-    });
-  };
 
   useEffect(() => {
     axios.get("http://localhost:8080/drawings").then((response) => {
@@ -51,6 +43,17 @@ const ShowUser = (props) => {
     setClickedNew(false);
   };
 
+  const clickNewHandler = () => {
+    setClickedNew(true);
+    setActiveDrawing({
+      title: "",
+      description: "",
+      usersWithAccess: [props.currentUser.username],
+      image: "",
+    });
+    setCurrentAuthorizedUsers([props.currentUser.username]);
+  };
+
   const clickOpenHandler = (id) => {
     setClickedOpen(true);
     drawingsToDisplay.forEach((drawing) => {
@@ -61,15 +64,10 @@ const ShowUser = (props) => {
     });
   };
 
-  const clickNewHandler = () => {
-    setClickedNew(true);
-    setActiveDrawing({
-      title: "",
-      description: "",
-      usersWithAccess: [props.currentUser.username],
-      image: "",
+  const deleteDrawing = (id) => {
+    axios.delete(`http://localhost:8080/drawings/${id}`).then((response) => {
+      window.location.reload(false);
     });
-    setCurrentAuthorizedUsers([props.currentUser.username]);
   };
 
   const saveCanvas = () => {
@@ -83,7 +81,7 @@ const ShowUser = (props) => {
       usersWithAccess: [...currentAuthorizedUsers],
     };
     axios.post("http://localhost:8080/drawings", drawing).then((response) => {
-      window.location.reload(false);
+      alert("Drawing saved!");
     });
   };
 
@@ -98,8 +96,12 @@ const ShowUser = (props) => {
     axios
       .put(`http://localhost:8080/drawings/${id}`, drawing)
       .then((response) => {
-        window.location.reload(false);
+        alert("Drawing updated!");
       });
+  };
+
+  const handleSelectChange = (e) => {
+    setSelectFormUser(e.target.value);
   };
 
   const addUsersWithAccess = () => {
@@ -107,10 +109,6 @@ const ShowUser = (props) => {
       return;
     }
     setCurrentAuthorizedUsers([...currentAuthorizedUsers, selectFormUser]);
-  };
-
-  const handleSelectChange = (e) => {
-    setSelectFormUser(e.target.value);
   };
 
   const removeUser = (username) => {
@@ -133,245 +131,50 @@ const ShowUser = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAuthorizedUsers]);
 
-  const addUserBtn = document.getElementById("addUserBtn");
-  try {
-    if (activeDrawing.usersWithAccess.length === 5) {
-      addUserBtn.disabled = true;
-    } else {
-      addUserBtn.disabled = false;
-    }
-  } catch (error) {
-    //pass
-  }
-
   if (clickedOpen) {
-    let renderThisDrawing = activeDrawing;
     return (
-      <div>
-        <MyNavbar
-          currentAuthorizedUsers={currentAuthorizedUsers}
-          currentUser={props.currentUser}
-        />
-
-        <div className="container mt-5 mb-5">
-          <div className="row">
-            <h1>{renderThisDrawing.title}</h1>
-          </div>
-          <div className=" mt-4">
-            <label className="col-sm-2 col-form-label">
-              Collaborators:
-              {activeDrawing.usersWithAccess.map((user, index) => {
-                let userColor;
-                if (index === 0) {
-                  userColor = <span>Black</span>;
-                }
-                if (index === 1) {
-                  userColor = <span>Red</span>;
-                }
-                if (index === 2) {
-                  userColor = <span>Green</span>;
-                }
-                if (index === 3) {
-                  userColor = <span>Blue</span>;
-                }
-                if (index === 4) {
-                  userColor = <span>Orange</span>;
-                }
-                return (
-                  <span key={index} className="badge bg-secondary m-2">
-                    {user}:{userColor}
-                    <button
-                      onClick={() => removeUser(user)}
-                      className="btn btn-danger btn-sm ms-2">
-                      X
-                    </button>
-                  </span>
-                );
-              })}
-            </label>
-          </div>
-          <div className="row mt-3">
-            <label className="col-sm-2 col-form-label">Add Collaborator:</label>
-
-            <select
-              className="col-sm-10 form-select"
-              value={selectFormUser}
-              onChange={handleSelectChange}
-              id="delectForm">
-              <option value="">Select a user to add</option>
-
-              {props.userList.map((user, index) => {
-                if (user.username === props.currentUser.username) {
-                  return null;
-                } else if (
-                  renderThisDrawing.usersWithAccess.includes(user.username)
-                ) {
-                  return null;
-                } else {
-                  let userFullName = user.firstname + " " + user.lastname;
-                  let userUsername = user.username;
-                  return (
-                    <option
-                      id={userUsername}
-                      key={index + "key"}
-                      value={userUsername}>
-                      {userFullName}
-                    </option>
-                  );
-                }
-              })}
-            </select>
-            <button
-              id="addUserBtn"
-              className="btn btn-warning mt-3"
-              onClick={() => {
-                addUsersWithAccess(selectFormUser);
-              }}>
-              Add User
-            </button>
-          </div>
-        </div>
-        <CanvasProvider>
-          <Canvas
-            activeDrawing={activeDrawing}
-            userLoggedIn={props.userLoggedIn}
-            setUserLoggedIn={props.setUserLoggedIn}
-            userList={props.userList}
-            setUserList={props.setUserList}
-            currentUser={props.currentUser}
-            setCurrentUser={props.setCurrentUser}
-            showLoginModal={props.showLoginModal}
-            setShowLoginModal={props.setShowLoginModal}
-            showCreateUserModal={props.showCreateUserModal}
-            setShowCreateUserModal={props.setShowCreateUserModal}
-          />
-          <br></br>
-          <button
-            onClick={() => updateDrawing(activeDrawing._id)}
-            className="btn btn-success me-3 mb-5 mt-3">
-            Update
-          </button>
-          <ClearCanvasButton />
-          <button
-            className="btn btn-warning ms-3 mb-5 mt-3"
-            onClick={() => {
-              setClickedOpen(false);
-              setActiveDrawing({});
-            }}>
-            Main Menu
-          </button>
-        </CanvasProvider>
-      </div>
+      <OpenDrawing
+        activeDrawing={activeDrawing}
+        setActiveDrawing={setActiveDrawing}
+        drawing={activeDrawing}
+        setClickedOpen={setClickedOpen}
+        setClickedNew={setClickedNew}
+        setDrawingTitle={setDrawingTitle}
+        setCurrentAuthorizedUsers={setCurrentAuthorizedUsers}
+        currentAuthorizedUsers={currentAuthorizedUsers}
+        updateDrawing={updateDrawing}
+        removeUser={removeUser}
+        handleSelectChange={handleSelectChange}
+        addUsersWithAccess={addUsersWithAccess}
+        userList={props.userList}
+        setUserList={props.setUserList}
+        currentUser={props.currentUser}
+        setCurrentUser={props.setCurrentUser}
+      />
     );
   }
 
   if (clickedNew) {
-    let renderThisDrawing = activeDrawing;
-
     return (
-      <div>
-        <MyNavbar
-          currentAuthorizedUsers={currentAuthorizedUsers}
-          currentUser={props.currentUser}
-        />
-
-        <div className="container mt-5 mb-5">
-          <div className="row">
-            <label className="col-sm-2 col-form-label">Drawing Name:</label>
-            <input
-              type="text"
-              placeholder="Drawing Title"
-              className="form-control"
-              value={drawingTitle}
-              onChange={(e) => {
-                setDrawingTitle(e.target.value);
-              }}
-            />
-          </div>
-          <div className="row card mt-4">
-            <label className="col-sm-2 col-form-label">
-              Collaborators: <br></br>
-              {renderThisDrawing.usersWithAccess.map((user, index) => {
-                return (
-                  <span className="badge bg-secondary m-2 ">
-                    {user}
-                    <button
-                      onClick={() => removeUser(user)}
-                      className="btn btn-danger btn-sm ms-2">
-                      X
-                    </button>
-                  </span>
-                );
-              })}
-            </label>
-          </div>
-          <div className="row mt-3">
-            <label className="col-sm-2 col-form-label">Add Collaborator:</label>
-
-            <select
-              className="col-sm-10 form-select"
-              value={selectFormUser}
-              onChange={handleSelectChange}
-              id="delectForm">
-              <option value="">Select a user to add</option>
-              {props.userList.map((user, index) => {
-                if (user.username === props.currentUser.username) {
-                  return null;
-                } else if (
-                  renderThisDrawing.usersWithAccess.includes(user.username)
-                ) {
-                  return null;
-                } else {
-                  let userFullName = user.firstname + " " + user.lastname;
-                  let userUsername = user.username;
-                  return (
-                    <option
-                      id={userUsername}
-                      key={index + "key"}
-                      value={userUsername}>
-                      {userFullName}
-                    </option>
-                  );
-                }
-              })}
-            </select>
-            <button
-              className="btn btn-warning mt-3"
-              onClick={() => addUsersWithAccess(selectFormUser)}>
-              Add User
-            </button>
-          </div>
-        </div>
-        <CanvasProvider>
-          <Canvas
-            activeDrawing={activeDrawing}
-            userLoggedIn={props.userLoggedIn}
-            setUserLoggedIn={props.setUserLoggedIn}
-            userList={props.userList}
-            setUserList={props.setUserList}
-            currentUser={props.currentUser}
-            setCurrentUser={props.setCurrentUser}
-            showLoginModal={props.showLoginModal}
-            setShowLoginModal={props.setShowLoginModal}
-            showCreateUserModal={props.showCreateUserModal}
-            setShowCreateUserModal={props.setShowCreateUserModal}
-          />
-          <button
-            onClick={saveCanvas}
-            className="btn btn-success me-3 mb-5 mt-3">
-            Save
-          </button>
-          <ClearCanvasButton />
-          <button
-            className="btn btn-warning ms-3 mb-5 mt-3"
-            onClick={() => {
-              setClickedNew(false);
-              setActiveDrawing({});
-            }}>
-            Main Menu
-          </button>
-        </CanvasProvider>
-      </div>
+      <NewDrawing
+        activeDrawing={activeDrawing}
+        setActiveDrawing={setActiveDrawing}
+        drawing={activeDrawing}
+        setClickedOpen={setClickedOpen}
+        setClickedNew={setClickedNew}
+        setDrawingTitle={setDrawingTitle}
+        setCurrentAuthorizedUsers={setCurrentAuthorizedUsers}
+        currentAuthorizedUsers={currentAuthorizedUsers}
+        updateDrawing={updateDrawing}
+        removeUser={removeUser}
+        handleSelectChange={handleSelectChange}
+        addUsersWithAccess={addUsersWithAccess}
+        userList={props.userList}
+        setUserList={props.setUserList}
+        currentUser={props.currentUser}
+        setCurrentUser={props.setCurrentUser}
+        saveCanvas={saveCanvas}
+      />
     );
   }
 

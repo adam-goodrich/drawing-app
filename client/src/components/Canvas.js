@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useCanvas } from "./CanvasContext";
 
-export function Canvas(props) {
+export default function Canvas(props) {
   const { canvasRef, prepareCanvas, startDrawing, finishDrawing, draw } =
     useCanvas();
 
@@ -26,10 +26,6 @@ export function Canvas(props) {
     }
     if (props.currentUser.username === props.activeDrawing.usersWithAccess[1]) {
       context.strokeStyle = "red";
-      const offsetX = 100;
-      const offsetY = 100;
-      context.beginPath();
-      context.moveTo(offsetX, offsetY);
     }
     if (props.currentUser.username === props.activeDrawing.usersWithAccess[2]) {
       context.strokeStyle = "green";
