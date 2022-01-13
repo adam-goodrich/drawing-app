@@ -82,6 +82,7 @@ const ShowUser = (props) => {
     };
     axios.post("http://localhost:8080/drawings", drawing).then((response) => {
       alert("Drawing saved!");
+      window.location.reload(false);
     });
   };
 
